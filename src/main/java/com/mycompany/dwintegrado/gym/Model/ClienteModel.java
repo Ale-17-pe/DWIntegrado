@@ -4,7 +4,7 @@
  */
 package com.mycompany.dwintegrado.gym.Model;
 
-import jakarta.persistence.Table;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,4 +15,5 @@ import lombok.Setter;
 public class ClienteModel {
     private int id_cliente, id_usuario;
     private String dni, nombre, apellido, correo, telefono, direccion, genero;
+    private java.sql.Date fecha_nacimiento;
 }

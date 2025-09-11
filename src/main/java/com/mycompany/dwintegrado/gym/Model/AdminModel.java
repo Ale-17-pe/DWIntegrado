@@ -4,10 +4,14 @@
  */
 package com.mycompany.dwintegrado.gym.Model;
 
-/**
- *
- * @author AlexandroG
- */
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class AdminModel {
     private int id_admin;
 }

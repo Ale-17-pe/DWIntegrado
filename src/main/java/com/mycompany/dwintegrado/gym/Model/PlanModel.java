@@ -4,10 +4,15 @@
  */
 package com.mycompany.dwintegrado.gym.Model;
 
-/**
- *
- * @author AlexandroG
- */
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class PlanModel {
     private int id_plan, duracion_dias;
     private String nombre, descripcion, tipo, estado;

@@ -4,12 +4,15 @@
  */
 package com.mycompany.dwintegrado.gym.Model;
 
-/**
- *
- * @author AlexandroG
- */
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 public class ClienteModel {
     private int id_cliente, id_usuario;
     private String dni, nombre, apellido, correo, telefono, direccion, genero;
-    
 }

@@ -4,12 +4,15 @@
  */
 package com.mycompany.dwintegrado.gym.Model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 
-/**
- *
- * @author AlexandroG
- */
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
 public class MembresiaModel {
     private int id_menbresia,id_cliente,id_plan;
     private java.sql.Date fecha_inicio_plan,fecha_,precio_pagado;

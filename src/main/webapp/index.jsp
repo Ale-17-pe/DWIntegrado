@@ -47,6 +47,7 @@
                     </div>
                 </div>
         </header>
+
         <section class="hero" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('Recursos/Imagenes/minionMamado.jpg') no-repeat center center/cover;">
             <div class="hero-overlay">
                 <div class="hero-content">

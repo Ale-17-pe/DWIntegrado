@@ -21,7 +21,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/RegistroServlet")
 public class RegistroServlet extends HttpServlet {
 
 protected void processRequest(HttpServletRequest request, HttpServletResponse response)

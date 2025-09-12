@@ -20,7 +20,6 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author AlexandroG
  */
-@WebServlet("/PlanServlet")
 public class PlanServlet extends HttpServlet {
 
     private PlanDao dao = new PlanDao();

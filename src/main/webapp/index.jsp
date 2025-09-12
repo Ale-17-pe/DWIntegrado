@@ -8,6 +8,8 @@
         <meta name="description" content="AresFitness - Transforma tu vida con el mejor gimnasio. Instalaciones modernas, entrenadores profesionales y planes personalizados.">
         <title>AresFitness  </title>
         <link rel="stylesheet" href="Recursos/Css/index.css">
+        <link rel="stylesheet" href="Recursos/Css/Encabezado.css">
+
 
         <link rel="icon" href="Recursos/Imagenes/logo.png" type="image/png">
         <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
@@ -24,10 +26,9 @@
                 </div>
                 <nav class="main-nav">
                     <ul>
-                        <li><a href="planes.jsp"><i class="fas fa-dumbbell"></i> PLANES</a></li>
                         <li><a href="ubicacion.jsp"><i class="fas fa-map-marker-alt"></i> UBICACIÓN</a></li>
-                        <li><a href="EjerciciosServlet"><i class="fas fa-running"></i> EJERCICIOS</a></li>
-                        <li><a href="planes2.jsp"><i class="fas fa-crown"></i> MEMBRESÍAS</a></li>
+                        <li><a href="#"><i class="fas fa-running"></i> EJERCICIOS</a></li>
+                        <li><a href=Membresias.jsp><i class="fas fa-crown"></i> MEMBRESÍAS</a></li>
                     </ul>
                 </nav>
                 <div class="header-actions">
@@ -307,191 +308,9 @@
                 </div>
             </div>
         </footer>
-                <style>
-/* ESTILOS PARA EL MENÚ DE USUARIO */
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    position: relative;
-}
-
-.user-btn {
-    background: linear-gradient(45deg, rgba(255, 213, 0, 0.2), rgba(216, 44, 44, 0.2));
-    color: #ffd500 !important;
-    border: 1px solid rgba(255, 213, 0, 0.3);
-    padding: 10px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    font-size: 14px;
-    position: relative;
-    z-index: 10;
-}
-
-.user-btn:hover {
-    background: linear-gradient(45deg, rgba(255, 213, 0, 0.3), rgba(216, 44, 44, 0.3));
-    color: #fff !important;
-    border-color: #ffd500;
-    box-shadow: 0 0 15px rgba(255, 213, 0, 0.3);
-    transform: translateY(-2px);
-}
-
-.user-btn i {
-    font-size: 16px;
-}
-
-.auth-dropdown {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    background: rgba(0, 0, 0, 0.95);
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 213, 0, 0.2);
-    width: 220px;
-    padding: 15px 0;
-    margin-top: 5px;
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    z-index: 1000;
-    backdrop-filter: blur(10px);
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
-}
-
-.auth-dropdown.show {
-    display: flex;
-    opacity: 1;
-    transform: translateY(0);
-    animation: fadeIn 0.4s ease-out forwards;
-}
-
-.auth-dropdown a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 20px;
-    text-decoration: none;
-    color: #ccc !important;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.auth-dropdown a:hover {
-    color: #ffd500 !important;
-    background: rgba(255, 213, 0, 0.05);
-}
-
-.auth-dropdown a:hover::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 3px;
-    background: linear-gradient(to bottom, #ffd500, #d82c2c);
-}
-
-.auth-dropdown a i {
-    width: 20px;
-    text-align: center;
-    font-size: 16px;
-    color: #ffd500;
-}
-
-.mobile-menu-btn {
-    display: none;
-    color: #ffd500;
-    font-size: 24px;
-    cursor: pointer;
-    background: rgba(255, 213, 0, 0.1);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s ease;
-}
-
-.mobile-menu-btn:hover {
-    background: rgba(255, 213, 0, 0.2);
-    transform: scale(1.05);
-}
-
-/* Responsive para el menú de usuario */
-@media (max-width: 992px) {
-    .header-actions {
-        order: 3;
-        margin-left: auto;
-    }
-    
-    .auth-dropdown {
-        position: fixed;
-        top: auto;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        border-radius: 15px 15px 0 0;
-        transform: translateY(100%);
-        box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.3);
-    }
-    
-    .auth-dropdown.show {
-        transform: translateY(0);
-    }
-    
-    .mobile-menu-btn {
-        display: flex;
-    }
-}
-
-@media (max-width: 576px) {
-    .user-btn span {
-        display: none;
-    }
-    
-    .user-btn {
-        padding: 10px;
-        width: 40px;
-        height: 40px;
-        justify-content: center;
-    }
-}
-</style>
-<script>
-// JavaScript para controlar la visualización del menú desplegable
-document.addEventListener('DOMContentLoaded', function() {
-    const userMenuBtn = document.getElementById('userMenuBtn');
-    const authDropdown = document.getElementById('authDropdown');
-    
-    if (userMenuBtn && authDropdown) {
-        // Alternar menú al hacer clic en el botón
-        userMenuBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            authDropdown.classList.toggle('show');
-        });
-        
-        // Cerrar menú al hacer clic fuera
-        document.addEventListener('click', function(e) {
-            if (!userMenuBtn.contains(e.target) && !authDropdown.contains(e.target)) {
-                authDropdown.classList.remove('show');
-            }
-        });
-        
-        // Prevenir que el clic en el menú lo cierre
-        authDropdown.addEventListener('click', function(e) {
-            e.stopPropagation();
-        });
-    }
-});
-</script>
         <script src="Recursos/JS/index.js"></script>
+        <script src="Recursos/JS/encabezado.js"></script>
+
+
     </body>
 </html>

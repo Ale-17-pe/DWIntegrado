@@ -59,7 +59,7 @@ public class UsuarioDao {
         try (Connection conn = ConexionDB.abrir(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, dni);
-            stmt.setString(2, contrasena); // âš ï¸ comparar con hash si usas BCrypt
+            stmt.setString(2, contrasena);
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     usuario = mapearUsuario(rs);

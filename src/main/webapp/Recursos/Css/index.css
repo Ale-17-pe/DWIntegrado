@@ -94,7 +94,7 @@ body {
 
 /* HEADER MEJORADO */
 .main-header {
-    background-color: rgba(0, 0, 0, 0.9) !important;
+    background-color: rgba(0, 0, 0, 0) !important;
     padding: 15px 40px;
     position: sticky;
     top: 0;

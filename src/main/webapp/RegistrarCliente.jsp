@@ -1,8 +1,3 @@
-<%-- 
-    Document   : RegistrarCliente
-    Created on : 9 set. 2025, 5:15:35 p. m.
-    Author     : AlexandroG
---%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
@@ -16,7 +11,6 @@
 </head>
 <body>
     <div class="admin-container">
-        <!-- Header con información del usuario -->
         <header class="admin-header">
             <div class="header-content">
                 <h1>Portal del Recepcionista - AresFitness</h1>
@@ -28,8 +22,6 @@
                 </div>
             </div>
         </header>
-
-        <!-- Panel lateral de navegación -->
         <aside class="sidebar">
             <nav class="admin-nav">
                 <ul>
@@ -72,22 +64,17 @@
                 </ul>
             </nav>
         </aside>
-
-        <!-- Contenido principal -->
         <main class="admin-main">
             <div class="breadcrumb">
                 <a href="recepcionista.jsp">Dashboard</a>
                 <span>/</span>
                 <span>Registrar Nuevo Miembro</span>
             </div>
-
             <div class="alert" id="form-alert"></div>
-
             <div class="form-container">
                 <h2 class="form-title">
                     <i class="fas fa-user-plus"></i> Registrar Nuevo Miembro
                 </h2>
-                
                 <form id="member-form">
                     <div class="form-grid">
                         <!-- Información básica -->
@@ -97,31 +84,26 @@
                                    maxlength="8" pattern="[0-9]{8}" title="El DNI debe tener 8 dígitos"
                                    placeholder="Ingrese el DNI (8 dígitos)">
                         </div>
-                        
                         <div class="form-group">
                             <label class="form-label" for="nombre">Nombre *</label>
                             <input type="text" id="nombre" name="nombre" class="form-input" required
                                    placeholder="Ingrese el nombre">
                         </div>
-                        
                         <div class="form-group">
                             <label class="form-label" for="apellido">Apellido *</label>
                             <input type="text" id="apellido" name="apellido" class="form-input" required
                                    placeholder="Ingrese el apellido">
                         </div>
-                        
                         <div class="form-group">
                             <label class="form-label" for="correo">Correo electrónico *</label>
                             <input type="email" id="correo" name="correo" class="form-input" required
                                    placeholder="ejemplo@correo.com">
                         </div>
-                        
                         <div class="form-group">
                             <label class="form-label" for="telefono">Teléfono *</label>
                             <input type="tel" id="telefono" name="telefono" class="form-input" required
                                    placeholder="Ingrese el teléfono">
                         </div>
-                        
                         <div class="form-group">
                             <label class="form-label" for="genero">Género *</label>
                             <select id="genero" name="genero" class="form-select" required>
@@ -132,15 +114,12 @@
                                 <option value="prefiero_no_decirlo">Prefiero no decirlo</option>
                             </select>
                         </div>
-                        
                         <div class="form-group">
                             <label class="form-label" for="direccion">Dirección</label>
                             <textarea id="direccion" name="direccion" class="form-textarea" rows="3"
                                       placeholder="Ingrese la dirección completa"></textarea>
                         </div>
                     </div>
-                    
-                    
                     <div class="form-actions">
                         <button type="reset" class="btn btn-secondary">
                             <i class="fas fa-times"></i> Limpiar
@@ -153,7 +132,6 @@
             </div>
         </main>
     </div>
-
     <script src="Recursos/JS/RegistarCliente.js"></script>
 </body>
 </html>

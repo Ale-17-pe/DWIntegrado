@@ -5,14 +5,16 @@
 package com.mycompany.dwintegrado.gym.Model;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
 
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 public class ClienteModel {
+
     private int id_cliente, id_usuario;
     private String dni, nombre, apellido, correo, telefono, direccion, genero;
     private java.sql.Date fecha_nacimiento;

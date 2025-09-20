@@ -1,9 +1,10 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestión de Usuarios - AresFitness</title>
+    <title>Gestiï¿½n de Usuarios - AresFitness</title>
     <link rel="stylesheet" href="Recursos/Css/rigistarUsuario.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -13,11 +14,11 @@
         <!-- Header con informaciÃ³n del usuario -->
         <header class="admin-header">
             <div class="header-content">
-                <h1>Gestión de Usuarios - AresFitness</h1>
+                <h1>Gestiï¿½n de Usuarios - AresFitness</h1>
                 <div class="user-info">
                     <span>Bienvenido, Admin</span>
                     <button class="logout-btn" id="logoutButton">
-                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                        <i class="fas fa-sign-out-alt"></i> Cerrar Sesiï¿½n
                     </button>
                 </div>
             </div>
@@ -48,13 +49,13 @@
                     <li class="nav-item">
                         <a href="#">
                             <span class="icon"><i class="fas fa-cog"></i></span>
-                            <span>Configuración</span>
+                            <span>Configuraciï¿½n</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a href="#">
                             <span class="icon"><i class="fas fa-chart-line"></i></span>
-                            <span>Estada­sticas</span>
+                            <span>Estadaï¿½sticas</span>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -91,7 +92,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label" for="email">Correo electrónico *</label>
+                            <label class="form-label" for="email">Correo electrï¿½nico *</label>
                             <input type="email" id="email" class="form-input" required>
                         </div>
 
@@ -101,7 +102,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label" for="direccion">Dirección</label>
+                            <label class="form-label" for="direccion">Direcciï¿½n</label>
                             <textarea id="direccion" class="form-textarea" rows="2"></textarea>
                         </div>
 
@@ -112,7 +113,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label" for="fechaContratacion">Fecha de contratación *</label>
+                            <label class="form-label" for="fechaContratacion">Fecha de contrataciï¿½n *</label>
                             <input type="date" id="fechaContratacion" class="form-input" required>
                         </div>
 
@@ -123,12 +124,12 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label" for="password">Contraseña *</label>
+                            <label class="form-label" for="password">Contraseï¿½a *</label>
                             <input type="password" id="password" class="form-input" required minlength="6">
                         </div>
 
                         <div class="form-group">
-                            <label class="form-label" for="confirmPassword">Confirmar contraseña *</label>
+                            <label class="form-label" for="confirmPassword">Confirmar contraseï¿½a *</label>
                             <input type="password" id="confirmPassword" class="form-input" required>
                         </div>
 

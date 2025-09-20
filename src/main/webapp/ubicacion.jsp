@@ -1,10 +1,12 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>UbicaciÛn - AresFitness</title>
+        <title>Ubicaci√≥n - AresFitness</title>
         <link rel="stylesheet" href="Recursos/Css/ubicacion.css">
+        <link rel="stylesheet" href="Recursos/Css/Encabezado.css">
         <link rel="icon" href="Recursos/Imagenes/logo.png" type="image/png">
         <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -19,10 +21,9 @@
                 </div>
                 <nav class="main-nav">
                     <ul>
-                        <li><a href="planes.jsp"><i class="fas fa-dumbbell"></i> PLANES</a></li>
-                        <li><a href="ubicacion.jsp"><i class="fas fa-map-marker-alt"></i> UBICACI”N</a></li>
+                        <li><a href="ubicacion.jsp"><i class="fas fa-map-marker-alt"></i> UBICACI√ìN</a></li>
                         <li><a href="EjerciciosServlet"><i class="fas fa-running"></i> EJERCICIOS</a></li>
-                        <li><a href="planes2.jsp"><i class="fas fa-crown"></i> MEMBRESÕAS</a></li>
+                        <li><a href="Membresias.jsp"><i class="fas fa-crown"></i> MEMBRES√çAS</a></li>
                     </ul>
                 </nav>
                 <div class="header-actions">
@@ -31,7 +32,7 @@
                     </button>
                     <div class="auth-dropdown" id="authDropdown">
                         <a href="login.jsp">
-                            <i class="fas fa-sign-in-alt"></i> Iniciar SesiÛn
+                            <i class="fas fa-sign-in-alt"></i> Iniciar Ses√≥n
                         </a>
                         <a href="registro.jsp">
                             <i class="fas fa-user-plus"></i> Registrarse
@@ -42,181 +43,21 @@
                     </div>
                 </div>
         </header>
-        <style>
-/* ESTILOS PARA EL MEN⁄ DE USUARIO */
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    position: relative;
-}
-
-.user-btn {
-    background: linear-gradient(45deg, rgba(255, 213, 0, 0.2), rgba(216, 44, 44, 0.2));
-    color: #ffd500 !important;
-    border: 1px solid rgba(255, 213, 0, 0.3);
-    padding: 10px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    font-size: 14px;
-    position: relative;
-    z-index: 10;
-}
-
-.user-btn:hover {
-    background: linear-gradient(45deg, rgba(255, 213, 0, 0.3), rgba(216, 44, 44, 0.3));
-    color: #fff !important;
-    border-color: #ffd500;
-    box-shadow: 0 0 15px rgba(255, 213, 0, 0.3);
-    transform: translateY(-2px);
-}
-
-.user-btn i {
-    font-size: 16px;
-}
-
-.auth-dropdown {
-    position: absolute;
-    top: calc(100% + 10px);
-    right: 0;
-    background: rgba(0, 0, 0, 0.95);
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 213, 0, 0.2);
-    width: 220px;
-    padding: 15px 0;
-    margin-top: 5px;
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    z-index: 1000;
-    backdrop-filter: blur(10px);
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: all 0.3s ease;
-}
-
-.auth-dropdown.show {
-    display: flex;
-    opacity: 1;
-    transform: translateY(0);
-    animation: fadeIn 0.4s ease-out forwards;
-}
-
-.auth-dropdown a {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 12px 20px;
-    text-decoration: none;
-    color: #ccc !important;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.auth-dropdown a:hover {
-    color: #ffd500 !important;
-    background: rgba(255, 213, 0, 0.05);
-}
-
-.auth-dropdown a:hover::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 3px;
-    background: linear-gradient(to bottom, #ffd500, #d82c2c);
-}
-
-.auth-dropdown a i {
-    width: 20px;
-    text-align: center;
-    font-size: 16px;
-    color: #ffd500;
-}
-
-.mobile-menu-btn {
-    display: none;
-    color: #ffd500;
-    font-size: 24px;
-    cursor: pointer;
-    background: rgba(255, 213, 0, 0.1);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s ease;
-}
-
-.mobile-menu-btn:hover {
-    background: rgba(255, 213, 0, 0.2);
-    transform: scale(1.05);
-}
-
-/* Responsive para el men˙ de usuario */
-@media (max-width: 992px) {
-    .header-actions {
-        order: 3;
-        margin-left: auto;
-    }
-    
-    .auth-dropdown {
-        position: fixed;
-        top: auto;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        border-radius: 15px 15px 0 0;
-        transform: translateY(100%);
-        box-shadow: 0 -5px 30px rgba(0, 0, 0, 0.3);
-    }
-    
-    .auth-dropdown.show {
-        transform: translateY(0);
-    }
-    
-    .mobile-menu-btn {
-        display: flex;
-    }
-}
-
-@media (max-width: 576px) {
-    .user-btn span {
-        display: none;
-    }
-    
-    .user-btn {
-        padding: 10px;
-        width: 40px;
-        height: 40px;
-        justify-content: center;
-    }
-}
-</style>
-
-        <!-- SecciÛn de ubicaciÛn mejorada -->
         <main>
             <section class="hero-location" style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('Recursos/Imagenes/extencion.jpg') no-repeat center center/cover;">
                 <div class="hero-overlay">
                     <div class="hero-content">
-                        <h1>ENCU…NTRANOS F¡CILMENTE</h1>
-                        <p>Ven y conoce nuestras modernas instalaciones en un lugar estratÈgico de la ciudad</p>
+                        <h1>ENC√ÅNTRANOS F√ÅCILMENTE</h1>
+                        <p>Ven y conoce nuestras modernas instalaciones en un lugar estrat√°gico de la ciudad</p>
                     </div>
                 </div>
             </section>
 
             <section class="location-section">
                 <div class="section-title">
-                    <h2>NUESTRA UBICACI”N</h2>
+                    <h2>NUESTRA UBICACIÔøΩN</h2>
                     <div class="title-line"></div>
-                    <p>Estamos ubicados en un lugar estratÈgico para tu comodidad</p>
+                    <p>Estamos ubicados en un lugar estratÔøΩgico para tu comodidad</p>
                 </div>
 
                 <div class="location-container">
@@ -240,8 +81,8 @@
                                 <i class="fas fa-map-marker-alt"></i>
                             </div>
                             <div class="info-content">
-                                <h3>DirecciÛn</h3>
-                                <p>Av. Principal 123, Lima, Per˙</p>
+                                <h3>Direcci√≥n</h3>
+                                <p>Av. Principal 123, Lima, PerÔøΩ</p>
                             </div>
                         </div>
 
@@ -250,9 +91,9 @@
                                 <i class="fas fa-clock"></i>
                             </div>
                             <div class="info-content">
-                                <h3>Horario de AtenciÛn</h3>
+                                <h3>Horario de Atenci√≥n</h3>
                                 <p>Lunes a Viernes: 5:00 am - 11:00 pm</p>
-                                <p>S·bados: 6:00 am - 10:00 pm</p>
+                                <p>SÔøΩbados: 6:00 am - 10:00 pm</p>
                                 <p>Domingos: 7:00 am - 9:00 pm</p>
                             </div>
                         </div>
@@ -262,7 +103,7 @@
                                 <i class="fas fa-phone"></i>
                             </div>
                             <div class="info-content">
-                                <h3>TelÈfono</h3>
+                                <h3>TelÔøΩfono</h3>
                                 <p>(01) 123-4567</p>
                             </div>
                         </div>
@@ -278,8 +119,8 @@
                         </div>
 
                         <div class="action-buttons">
-                            <a href="https://maps.google.com/?q=Av. Principal 123, Lima, Per˙" target="_blank" class="btn-direction">
-                                <i class="fas fa-directions"></i> C”MO LLEGAR
+                            <a href="https://maps.google.com/?q=Av. Principal 123, Lima, PerÔøΩ" target="_blank" class="btn-direction">
+                                <i class="fas fa-directions"></i> C√ìMO LLEGAR
                             </a>
                             <a href="https://api.whatsapp.com/send?phone=51987654321" target="_blank" class="btn-whatsapp">
                                 <i class="fab fa-whatsapp"></i> ESCRIBENOS
@@ -288,13 +129,11 @@
                     </div>
                 </div>
             </section>
-
-            <!-- SecciÛn de transporte -->
             <section class="transport-section">
                 <div class="section-title">
                     <h2>MEDIOS DE TRANSPORTE</h2>
                     <div class="title-line"></div>
-                    <p>Llega f·cilmente a nuestras instalaciones</p>
+                    <p>Llega fÔøΩcilmente a nuestras instalaciones</p>
                 </div>
 
                 <div class="transport-options">
@@ -302,8 +141,8 @@
                         <div class="transport-icon">
                             <i class="fas fa-bus"></i>
                         </div>
-                        <h3>Transporte P˙blico</h3>
-                        <p>LÌneas de buses 102, 204 y 305 con parada a media cuadra</p>
+                        <h3>Transporte PÔøΩblico</h3>
+                        <p>LÔøΩneas de buses 102, 204 y 305 con parada a media cuadra</p>
                     </div>
 
                     <div class="transport-card">
@@ -311,7 +150,7 @@
                             <i class="fas fa-subway"></i>
                         </div>
                         <h3>Metro</h3>
-                        <p>EstaciÛn Central a 3 cuadras de distancia</p>
+                        <p>Estaci√≥n Central a 3 cuadras de distancia</p>
                     </div>
 
                     <div class="transport-card">
@@ -334,7 +173,7 @@
                             <img src="Recursos/Imagenes/logo.png" alt="Logo AresFitness">
                         </a>
                     </div>
-                    <p>Transformando vidas a travÈs del fitness desde 2020</p>
+                    <p>Transformando vidas a travÔøΩs del fitness desde 2020</p>
                     <div class="footer-social">
                         <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
                         <a href="https://www.instagram.com/aresfitness.peru/" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
@@ -344,20 +183,20 @@
                 </div>
 
                 <div class="footer-section">
-                    <h3>Enlaces r·pidos</h3>
+                    <h3>Enlaces rÔøΩpidos</h3>
                     <ul>
                         <li><a href="index.jsp">Inicio</a></li>
                         <li><a href="mutar.jsp">Planes</a></li>
-                        <li><a href="ubicacion.jsp">UbicaciÛn</a></li>
+                        <li><a href="ubicacion.jsp">UbicaciÔøΩn</a></li>
                         <li><a href="EjerciciosServlet">Ejercicios</a></li>
-                        <li><a href="planes2.jsp">MembresÌas</a></li>
+                        <li><a href="planes2.jsp">MembresÔøΩas</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-section">
-                    <h3>Cont·ctanos</h3>
+                    <h3>ContÔøΩctanos</h3>
                     <div class="contact-info">
-                        <p><i class="fas fa-map-marker-alt"></i> Av. Principal 123, Lima, Per˙</p>
+                        <p><i class="fas fa-map-marker-alt"></i> Av. Principal 123, Lima, PerÔøΩ</p>
                         <p><i class="fas fa-phone"></i> (01) 123-4567</p>
                         <p><i class="fas fa-envelope"></i> info@aresfitness.com</p>
                         <p><i class="fab fa-whatsapp"></i> +51 987 654 321</p>
@@ -365,9 +204,9 @@
                 </div>
 
                 <div class="footer-section">
-                    <h3>Horario de atenciÛn</h3>
+                    <h3>Horario de atenci√≥n</h3>
                     <p>Lunes a Viernes: 5:00 am - 11:00 pm</p>
-                    <p>S·bados: 6:00 am - 10:00 pm</p>
+                    <p>S√°bados: 6:00 am - 10:00 pm</p>
                     <p>Domingos: 7:00 am - 9:00 pm</p>
                     <div class="reclamation">
                         <img src="Recursos/Imagenes/LibroR.png" alt="Libro de Reclamaciones">
@@ -379,8 +218,8 @@
                 <div class="footer-bottom-content">
                     <p>&copy; 2025 AresFitness. Todos los derechos reservados.</p>
                     <div class="legal-links">
-                        <a href="#">TÈrminos y Condiciones</a>
-                        <a href="#">PolÌticas de Privacidad</a>
+                        <a href="#">T√©rminos y Condiciones</a>
+                        <a href="#">Pol√≠ticas de Privacidad</a>
                         <a href="#">Quejas y Reclamaciones</a>
                     </div>
                 </div>
@@ -389,26 +228,26 @@
         <script src="Recursos/JS/index.js"></script>
         <!-- Script para funcionalidades -->
        <script>
-// JavaScript para controlar la visualizaciÛn del men˙ desplegable
+// JavaScript para controlar la visualizaciÔøΩn del menÔøΩ desplegable
 document.addEventListener('DOMContentLoaded', function() {
     const userMenuBtn = document.getElementById('userMenuBtn');
     const authDropdown = document.getElementById('authDropdown');
     
     if (userMenuBtn && authDropdown) {
-        // Alternar men˙ al hacer clic en el botÛn
+        // Alternar menÔøΩ al hacer clic en el botÔøΩn
         userMenuBtn.addEventListener('click', function(e) {
             e.stopPropagation();
             authDropdown.classList.toggle('show');
         });
         
-        // Cerrar men˙ al hacer clic fuera
+        // Cerrar menÔøΩ al hacer clic fuera
         document.addEventListener('click', function(e) {
             if (!userMenuBtn.contains(e.target) && !authDropdown.contains(e.target)) {
                 authDropdown.classList.remove('show');
             }
         });
         
-        // Prevenir que el clic en el men˙ lo cierre
+        // Prevenir que el clic en el menÔøΩ lo cierre
         authDropdown.addEventListener('click', function(e) {
             e.stopPropagation();
         });

@@ -90,9 +90,9 @@
                                 <i class="fas fa-calendar-alt"></i>
                             </div>
 
-                            <div class="input-field select-field">
+                            <div class="input-field ">
                                 <select id="genero" name="genero" required>
-                                    <option value="" disabled selected>Seleccione su sexo</option>
+                                    <option value="">Seleccione su sexo</option>
                                     <option value="Masculino">Masculino</option>
                                     <option value="Femenino">Femenino</option>
                                     <option value="Otro">Otro</option>

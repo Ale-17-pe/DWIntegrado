@@ -1,9 +1,3 @@
-<%-- 
-    Document   : portalRecepcionista
-    Created on : 8 set. 2025, 2:19:47 p. m.
-    Author     : AlexandroG
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
@@ -29,8 +23,6 @@
                 </div>
             </div>
         </header>
-
-        <!-- Panel lateral de navegación -->
         <aside class="sidebar">
             <nav class="admin-nav">
                 <ul>

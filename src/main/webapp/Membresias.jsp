@@ -1,3 +1,4 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -45,16 +46,12 @@
             </div>
         </div>
 </header>
-
-<!-- Hero Section -->
 <section class="hero">
     <div class="hero-content">
         <h2>Transforma tu cuerpo, transforma tu vida</h2>
         <p>Elige la membresía perfecta para alcanzar tus objetivos fitness con AresFitness</p>
     </div>
 </section>
-
-<!-- Plans Section -->
 <section class="plans-section">
     <div class="section-title">
         <h2>Nuestros Planes de Membresía</h2>
@@ -83,8 +80,6 @@
                 <button class="btn btn-secondary">Seleccionar Plan</button>
             </div>
         </div>
-
-        <!-- Plan Premium -->
         <div class="plan-card popular">
             <div class="plan-header">
                 <h3 class="plan-name">Plan Premium</h3>
@@ -106,8 +101,6 @@
                 <button class="btn btn-primary">Seleccionar Plan</button>
             </div>
         </div>
-
-        <!-- Plan Elite -->
         <div class="plan-card">
             <div class="plan-header">
                 <h3 class="plan-name">Plan Elite</h3>
@@ -131,8 +124,6 @@
         </div>
     </div>
 </section>
-
-<!-- Benefits Section -->
 <section class="benefits-section">
     <div class="section-title">
         <h2>Beneficios de ser miembro</h2>
@@ -162,8 +153,6 @@
         </div>
     </div>
 </section>
-
-<!-- FAQ Section -->
 <section class="faq-section">
     <div class="section-title">
         <h2>Preguntas Frecuentes</h2>

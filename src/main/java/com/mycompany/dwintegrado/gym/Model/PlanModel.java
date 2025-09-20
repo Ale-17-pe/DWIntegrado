@@ -17,6 +17,4 @@ public class PlanModel {
     private int id_plan, duracion_dias;
     private String nombre, descripcion, tipo, estado;
     private double precio;
-
-    
 }

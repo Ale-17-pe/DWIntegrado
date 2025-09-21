@@ -19,8 +19,10 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  * @author AlexandroG
  */
+
 @WebServlet("/PlanGestionServlet")
 public class PlanGestionServlet extends HttpServlet {
+    /*
 
     private PlanDao dao = new PlanDao();
 
@@ -29,7 +31,7 @@ public class PlanGestionServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String accion = request.getParameter("accion");
-        List<PlanModel> listaPlanes = dao.obtenerTodos();
+        List<PlanModel> listaPlanes = dao.listarTodos();
 
         if (accion == null || accion.equals("listar")) {
             request.setAttribute("planes", listaPlanes);
@@ -59,7 +61,7 @@ public class PlanGestionServlet extends HttpServlet {
                 break;
 
             default:
-                request.setAttribute("planes", dao.obtenerTodos());
+                request.setAttribute("planes", dao.listarTodos());
                 request.getRequestDispatcher("gestionPlanes.jsp").forward(request, response);
                 break;
         }
@@ -105,5 +107,7 @@ public class PlanGestionServlet extends HttpServlet {
             response.sendRedirect("PlanGestionServlet?accion=listar");
         }
     }
+
+ */
 }
 

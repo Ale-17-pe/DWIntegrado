@@ -2,123 +2,98 @@ package com.mycompany.dwintegrado.gym.Dao;
 
 import com.mycompany.dwintegrado.gym.Config.ConexionDB;
 import com.mycompany.dwintegrado.gym.Model.PlanModel;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlanDao {
-    Connection conn;
-    PreparedStatement stmt;
-    ResultSet rs;
 
-    // INSERTAR
-    public boolean insertar(PlanModel plan) {
-        String sql = "INSERT INTO plan (nombre, descripcion, duracion_dias, precio, tipo, estado) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
-        try {
-            conn = ConexionDB.abrir();
-            stmt = conn.prepareStatement(sql);
+    public List<PlanModel> listarTodos() throws SQLException {
+        List<PlanModel> planes = new ArrayList<>();
+        String sql = "SELECT * FROM Plan WHERE estado = 'Activo' ORDER BY nombre";
+
+        try (Connection conn = ConexionDB.abrir();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                planes.add(mapearPlan(rs));
+            }
+        }
+        return planes;
+    }
+
+    public PlanModel obtenerPorId(int idPlan) throws SQLException {
+        String sql = "SELECT * FROM Plan WHERE id_plan = ?";
+
+        try (Connection conn = ConexionDB.abrir();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idPlan);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapearPlan(rs);
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean crear(PlanModel plan) throws SQLException {
+        String sql = "INSERT INTO Plan (nombre, descripcion, duration_dias, precio, tipo, estado) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = ConexionDB.abrir();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, plan.getNombre());
             stmt.setString(2, plan.getDescripcion());
-            stmt.setInt(3, plan.getDuracion_dias());
-            stmt.setDouble(4, plan.getPrecio());
+            stmt.setInt(3, plan.getDuration_dias());
+            stmt.setBigDecimal(4, plan.getPrecio());
             stmt.setString(5, plan.getTipo());
             stmt.setString(6, plan.getEstado());
-            int filas = stmt.executeUpdate();
-            return filas > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+            return stmt.executeUpdate() > 0;
         }
-        return false;
     }
 
-    //
-    public PlanModel obtenerPorId(int id) {
-        PlanModel plan = null;
-        String sql = "SELECT * FROM plan WHERE id_plan=?";
-        try {
-            conn = ConexionDB.abrir();
-            stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, id);
-            rs = stmt.executeQuery();
-            if (rs.next()) {
-                plan = new PlanModel();
-                plan.setId_plan(rs.getInt("id_plan"));
-                plan.setNombre(rs.getString("nombre"));
-                plan.setDescripcion(rs.getString("descripcion"));
-                plan.setDuracion_dias(rs.getInt("duracion_dias"));
-                plan.setPrecio(rs.getDouble("precio"));
-                plan.setTipo(rs.getString("tipo"));
-                plan.setEstado(rs.getString("estado"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return plan;
-    }
+    public boolean actualizar(PlanModel plan) throws SQLException {
+        String sql = "UPDATE Plan SET nombre = ?, descripcion = ?, duration_dias = ?, precio = ?, tipo = ?, estado = ? WHERE id_plan = ?";
 
-    // LISTAR TODOS
-    public List<PlanModel> obtenerTodos() {
-        List<PlanModel> lista = new ArrayList<>();
-        String sql = "SELECT * FROM plan";
-        try {
-            conn = ConexionDB.abrir();
-            stmt = conn.prepareStatement(sql);
-            rs = stmt.executeQuery();
-            while (rs.next()) {
-                PlanModel plan = new PlanModel();
-                plan.setId_plan(rs.getInt("id_plan"));
-                plan.setNombre(rs.getString("nombre"));
-                plan.setDescripcion(rs.getString("descripcion"));
-                plan.setDuracion_dias(rs.getInt("duracion_dias"));
-                plan.setPrecio(rs.getDouble("precio"));
-                plan.setTipo(rs.getString("tipo"));
-                plan.setEstado(rs.getString("estado"));
-                lista.add(plan);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return lista;
-    }
+        try (Connection conn = ConexionDB.abrir();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-    //
-    public boolean actualizar(PlanModel plan) {
-        String sql = "UPDATE plan SET nombre=?, descripcion=?, duracion_dias=?, precio=?, tipo=?, estado=? WHERE id_plan=?";
-        try {
-            conn = ConexionDB.abrir();
-            stmt = conn.prepareStatement(sql);
             stmt.setString(1, plan.getNombre());
             stmt.setString(2, plan.getDescripcion());
-            stmt.setInt(3, plan.getDuracion_dias());
-            stmt.setDouble(4, plan.getPrecio());
+            stmt.setInt(3, plan.getDuration_dias());
+            stmt.setBigDecimal(4, plan.getPrecio());
             stmt.setString(5, plan.getTipo());
             stmt.setString(6, plan.getEstado());
             stmt.setInt(7, plan.getId_plan());
-            int filas = stmt.executeUpdate();
-            return filas > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
+
+            return stmt.executeUpdate() > 0;
         }
-        return false;
     }
 
-    // ELIMINAR
-    public boolean eliminar(int id) {
-        String sql = "DELETE FROM plan WHERE id_plan=?";
-        try {
-            conn = ConexionDB.abrir();
-            stmt = conn.prepareStatement(sql);
-            stmt.setInt(1, id);
-            int filas = stmt.executeUpdate();
-            return filas > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public boolean eliminar(int idPlan) throws SQLException {
+        String sql = "UPDATE Plan SET estado = 'Inactivo' WHERE id_plan = ?";
+
+        try (Connection conn = ConexionDB.abrir();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idPlan);
+            return stmt.executeUpdate() > 0;
         }
-        return false;
+    }
+
+    private PlanModel mapearPlan(ResultSet rs) throws SQLException {
+        PlanModel plan = new PlanModel();
+        plan.setId_plan(rs.getInt("id_plan"));
+        plan.setNombre(rs.getString("nombre"));
+        plan.setDescripcion(rs.getString("descripcion"));
+        plan.setDuration_dias(rs.getInt("duration_dias"));
+        plan.setPrecio(rs.getBigDecimal("precio"));
+        plan.setTipo(rs.getString("tipo"));
+        plan.setEstado(rs.getString("estado"));
+        return plan;
     }
 }

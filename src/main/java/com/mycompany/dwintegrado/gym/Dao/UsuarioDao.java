@@ -4,6 +4,8 @@ import com.mycompany.dwintegrado.gym.Config.ConexionDB;
 import com.mycompany.dwintegrado.gym.Model.UsuarioModel;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UsuarioDao {
     public int insertar(UsuarioModel usuarioModel) throws SQLException {
@@ -83,6 +85,48 @@ public class UsuarioDao {
             }
         }
         return usuarioModel;
+    }
+
+    public List<UsuarioModel> obtenerTodos() throws SQLException {
+        List<UsuarioModel> usuarios = new ArrayList<>();
+        String sql = "SELECT * FROM usuario";
+        try (Connection conn = ConexionDB.abrir(); PreparedStatement stmt = conn.prepareStatement(sql); ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                usuarios.add(mapearUsuario(rs));
+            }
+        }
+        return usuarios;
+    }
+
+    public boolean actualizar(UsuarioModel usuarioModel) throws SQLException {
+        String sql = "UPDATE usuario SET nombre=?, apellido=?, email=?, telefono=?, rol=?, estado=? WHERE id_usuario=?";
+        try (Connection conn = ConexionDB.abrir(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, usuarioModel.getNombre());
+            stmt.setString(2, usuarioModel.getApellido());
+            stmt.setString(3, usuarioModel.getEmail());
+            stmt.setString(4, usuarioModel.getTelefono());
+            stmt.setString(5, usuarioModel.getRol());
+            stmt.setString(6, usuarioModel.getEstado());
+            stmt.setInt(7, usuarioModel.getId_usuario());
+            return stmt.executeUpdate() > 0;
+        }
+    }
+
+    public boolean eliminar(int idUsuario) throws SQLException {
+        String sql = "DELETE FROM usuario WHERE id_usuario = ?";
+        try (Connection conn = ConexionDB.abrir(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idUsuario);
+            return stmt.executeUpdate() > 0;
+        }
+    }
+
+    public boolean cambiarEstado(int idUsuario, String estado) throws SQLException {
+        String sql = "UPDATE usuario SET estado=? WHERE id_usuario = ?";
+        try (Connection conn = ConexionDB.abrir(); PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, estado);
+            stmt.setInt(2, idUsuario);
+            return stmt.executeUpdate() > 0;
+        }
     }
 
     private UsuarioModel mapearUsuario(ResultSet rs) throws SQLException {

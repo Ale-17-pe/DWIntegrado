@@ -20,4 +20,7 @@ public class ContenidoModel {
     private String estado;
     private LocalDateTime fecha_creacion;
     private int id_usuario_creador;
+
+    public void setCreadorNombre(String creadorNombre) {
+    }
 }

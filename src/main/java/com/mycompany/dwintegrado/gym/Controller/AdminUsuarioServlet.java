@@ -10,70 +10,155 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 
 @WebServlet(name = "AdminUsuarioServlet", urlPatterns = {"/AdminUsuarioServlet"})
 public class AdminUsuarioServlet extends HttpServlet {
+
+    private UsuarioDao usuarioDao;
+
+    public AdminUsuarioServlet() {
+        this.usuarioDao = new UsuarioDao();
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+
+        String action = request.getParameter("action");
+
+        try {
+            switch (action) {
+                case "listar":
+                    listarUsuarios(request, response);
+                    break;
+                case "obtener":
+                    obtenerUsuario(request, response);
+                    break;
+                default:
+                    response.sendRedirect("portalAdmin.jsp?error=accion_invalida");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("portalAdmin.jsp?error=error_servidor");
+        }
+    }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
 
-        if ("create".equals(action)) {
-            crearUsuario(request, response);
+        try {
+            switch (action) {
+                case "crear":
+                    crearUsuario(request, response);
+                    break;
+                case "actualizar":
+                    actualizarUsuario(request, response);
+                    break;
+                case "eliminar":
+                    eliminarUsuario(request, response);
+                    break;
+                case "cambiarEstado":
+                    cambiarEstadoUsuario(request, response);
+                    break;
+                default:
+                    response.sendRedirect("portalAdmin.jsp?error=accion_invalida");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect("portalAdmin.jsp?error=error_servidor");
         }
     }
 
+    private void listarUsuarios(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+
+        List<UsuarioModel> usuarios = usuarioDao.obtenerTodos();
+        request.setAttribute("usuarios", usuarios);
+        request.getRequestDispatcher("portalAdmin.jsp").forward(request, response);
+    }
+
+    private void obtenerUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, ServletException, IOException {
+
+        int idUsuario = Integer.parseInt(request.getParameter("id"));
+        UsuarioModel usuario = usuarioDao.obtenerPorId(idUsuario);
+
+        request.setAttribute("usuario", usuario);
+        request.getRequestDispatcher("editarUsuario.jsp").forward(request, response);
+    }
+
     private void crearUsuario(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws SQLException, IOException {
 
-        try {
-            // Obtener parámetros del formulario
-            String nombre = request.getParameter("nombre");
-            String email = request.getParameter("email");
-            String dni = request.getParameter("dni");
-            String telefono = request.getParameter("telefono");
-            String password = request.getParameter("password");
-            String rol = request.getParameter("rol");
-            String plan = request.getParameter("plan");
+        UsuarioModel usuario = new UsuarioModel();
+        usuario.setDni(request.getParameter("dni"));
+        usuario.setNombre(request.getParameter("nombre"));
+        usuario.setApellido(request.getParameter("apellido"));
+        usuario.setEmail(request.getParameter("email"));
+        usuario.setTelefono(request.getParameter("telefono"));
+        usuario.setRol(request.getParameter("rol"));
+        usuario.setUsuario_login(request.getParameter("dni"));
+        usuario.setPassword(request.getParameter("password"));
+        usuario.setFecha_Nacimiento(LocalDate.parse(request.getParameter("fechaNacimiento")));
+        usuario.setEstado("activo");
 
-            // Validar campos obligatorios
-            if (nombre == null || email == null || dni == null ||
-                    telefono == null || password == null || rol == null) {
+        int idGenerado = usuarioDao.insertar(usuario);
 
-                response.sendRedirect("portalAdmin.jsp?error=campos_obligatorios");
-                return;
-            }
+        if (idGenerado > 0) {
+            response.sendRedirect("portalAdmin.jsp?success=usuario_creado&id=" + idGenerado);
+        } else {
+            response.sendRedirect("portalAdmin.jsp?error=error_crear_usuario");
+        }
+    }
 
-            // Crear objeto UsuarioModel
-            UsuarioModel usuario = new UsuarioModel();
-            usuario.setNombre(nombre);
-            usuario.setEmail(email);
-            usuario.setDni(dni);
-            usuario.setTelefono(telefono);
-            usuario.setPassword(password);
-            usuario.setRol(rol);
-            usuario.setUsuario_login(dni); // Usar DNI como login
-            usuario.setFecha_Nacimiento(LocalDate.now().minusYears(18)); // Fecha por defecto
-            usuario.setEstado("activo");
+    private void actualizarUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
 
-            // Insertar en base de datos
-            UsuarioDao usuarioDao = new UsuarioDao();
-            int idGenerado = usuarioDao.insertar(usuario);
+        UsuarioModel usuario = new UsuarioModel();
+        usuario.setId_usuario(Integer.parseInt(request.getParameter("id_usuario")));
+        usuario.setNombre(request.getParameter("nombre"));
+        usuario.setApellido(request.getParameter("apellido"));
+        usuario.setEmail(request.getParameter("email"));
+        usuario.setTelefono(request.getParameter("telefono"));
+        usuario.setRol(request.getParameter("rol"));
+        usuario.setEstado(request.getParameter("estado"));
 
-            if (idGenerado > 0) {
-                // Aquí podrías asignar el plan si se seleccionó uno
-                response.sendRedirect("portalAdmin.jsp?success=usuario_creado");
-            } else {
-                response.sendRedirect("portalAdmin.jsp?error=error_creacion");
-            }
+        boolean exito = usuarioDao.actualizar(usuario);
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendRedirect("portalAdmin.jsp?error=error_bd");
-        } catch (Exception e) {
-            e.printStackTrace();
-            response.sendRedirect("portalAdmin.jsp?error=error_general");
+        if (exito) {
+            response.sendRedirect("portalAdmin.jsp?success=usuario_actualizado");
+        } else {
+            response.sendRedirect("portalAdmin.jsp?error=error_actualizar_usuario");
+        }
+    }
+
+    private void eliminarUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+
+        int idUsuario = Integer.parseInt(request.getParameter("id_usuario"));
+        boolean exito = usuarioDao.eliminar(idUsuario);
+
+        if (exito) {
+            response.sendRedirect("portalAdmin.jsp?success=usuario_eliminado");
+        } else {
+            response.sendRedirect("portalAdmin.jsp?error=error_eliminar_usuario");
+        }
+    }
+
+    private void cambiarEstadoUsuario(HttpServletRequest request, HttpServletResponse response)
+            throws SQLException, IOException {
+
+        int idUsuario = Integer.parseInt(request.getParameter("id_usuario"));
+        String estado = request.getParameter("estado");
+
+        boolean exito = usuarioDao.cambiarEstado(idUsuario, estado);
+
+        if (exito) {
+            response.sendRedirect("portalAdmin.jsp?success=estado_actualizado");
+        } else {
+            response.sendRedirect("portalAdmin.jsp?error=error_cambiar_estado");
         }
     }
 }

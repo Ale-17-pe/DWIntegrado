@@ -23,8 +23,8 @@
         System.out.println("DEBUG - Email: " + cliente.getCorreo());
         System.out.println("DEBUG - DNI: " + cliente.getDni());
         System.out.println("DEBUG - Teléfono: " + cliente.getTelefono());
-        System.out.println("DEBUG - Genero: " + cliente.getGenero());
         System.out.println("DEBUG - Direccion: " + cliente.getDireccion());
+        System.out.println("DEBUG - Genero: " + cliente.getGenero());
     }
 
     if (cliente == null) {
@@ -107,7 +107,7 @@
         }
 
         .modal-contenido {
-            background-color: #fff;
+            background-color: #000000;
             margin: 10% auto;
             padding: 20px;
             border-radius: 8px;

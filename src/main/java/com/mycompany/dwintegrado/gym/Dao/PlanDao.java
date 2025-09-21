@@ -36,6 +36,31 @@ public class PlanDao {
         return false;
     }
 
+    //
+    public PlanModel obtenerPorId(int id) {
+        PlanModel plan = null;
+        String sql = "SELECT * FROM plan WHERE id_plan=?";
+        try {
+            conn = ConexionDB.abrir();
+            stmt = conn.prepareStatement(sql);
+            stmt.setInt(1, id);
+            rs = stmt.executeQuery();
+            if (rs.next()) {
+                plan = new PlanModel();
+                plan.setId_plan(rs.getInt("id_plan"));
+                plan.setNombre(rs.getString("nombre"));
+                plan.setDescripcion(rs.getString("descripcion"));
+                plan.setDuracion_dias(rs.getInt("duracion_dias"));
+                plan.setPrecio(rs.getDouble("precio"));
+                plan.setTipo(rs.getString("tipo"));
+                plan.setEstado(rs.getString("estado"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return plan;
+    }
+
     // LISTAR TODOS
     public List<PlanModel> obtenerTodos() {
         List<PlanModel> lista = new ArrayList<>();
@@ -46,7 +71,7 @@ public class PlanDao {
             rs = stmt.executeQuery();
             while (rs.next()) {
                 PlanModel plan = new PlanModel();
-                plan.setId_plan(rs.getInt("id_pla")); // 👈 usa id_pla de tu tabla
+                plan.setId_plan(rs.getInt("id_plan"));
                 plan.setNombre(rs.getString("nombre"));
                 plan.setDescripcion(rs.getString("descripcion"));
                 plan.setDuracion_dias(rs.getInt("duracion_dias"));
@@ -61,9 +86,30 @@ public class PlanDao {
         return lista;
     }
 
+    //
+    public boolean actualizar(PlanModel plan) {
+        String sql = "UPDATE plan SET nombre=?, descripcion=?, duracion_dias=?, precio=?, tipo=?, estado=? WHERE id_plan=?";
+        try {
+            conn = ConexionDB.abrir();
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, plan.getNombre());
+            stmt.setString(2, plan.getDescripcion());
+            stmt.setInt(3, plan.getDuracion_dias());
+            stmt.setDouble(4, plan.getPrecio());
+            stmt.setString(5, plan.getTipo());
+            stmt.setString(6, plan.getEstado());
+            stmt.setInt(7, plan.getId_plan());
+            int filas = stmt.executeUpdate();
+            return filas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     // ELIMINAR
     public boolean eliminar(int id) {
-        String sql = "DELETE FROM plan WHERE id_pla=?";
+        String sql = "DELETE FROM plan WHERE id_plan=?";
         try {
             conn = ConexionDB.abrir();
             stmt = conn.prepareStatement(sql);

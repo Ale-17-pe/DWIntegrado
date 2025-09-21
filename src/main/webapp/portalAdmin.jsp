@@ -770,7 +770,7 @@
                     </a>
                 </li>
                 <li class="nav-item" data-section="plans">
-                    <a href="#">
+                    <a href="PlanGestionServlet?accion=listar">
                         <span class="icon"><i class="fas fa-crown"></i></span>
                         <span>Gestión de Planes</span>
                     </a>
@@ -794,7 +794,7 @@
                     </a>
                 </li>
                 <li class="nav-item" data-section="permissions">
-                    <a href="#">
+                    <a href="PlanGestionServlet?accion=listar">
                         <span class="icon"><i class="fas fa-lock"></i></span>
                         <span>Gestión de Permisos</span>
                     </a>

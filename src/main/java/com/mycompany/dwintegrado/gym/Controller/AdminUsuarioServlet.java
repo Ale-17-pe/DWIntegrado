@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
@@ -85,8 +86,27 @@ public class AdminUsuarioServlet extends HttpServlet {
         int idUsuario = Integer.parseInt(request.getParameter("id"));
         UsuarioModel usuario = usuarioDao.obtenerPorId(idUsuario);
 
-        request.setAttribute("usuario", usuario);
-        request.getRequestDispatcher("editarUsuario.jsp").forward(request, response);
+        if (usuario != null) {
+            response.setContentType("application/json;charset=UTF-8");
+            try (PrintWriter out = response.getWriter()) {
+                out.print("{");
+                out.print("\"id_usuario\":" + usuario.getId_usuario() + ",");
+                out.print("\"dni\":\"" + usuario.getDni() + "\",");
+                out.print("\"nombre\":\"" + usuario.getNombre() + "\",");
+                out.print("\"apellido\":\"" + usuario.getApellido() + "\",");
+                out.print("\"email\":\"" + usuario.getEmail() + "\",");
+                out.print("\"telefono\":\"" + usuario.getTelefono() + "\",");
+                out.print("\"direccion\":\"" + usuario.getDireccion() + "\",");
+                out.print("\"rol\":\"" + usuario.getRol() + "\",");
+                out.print("\"estado\":\"" + usuario.getEstado() + "\",");
+                out.print("\"usuario_login\":\"" + usuario.getUsuario_login() + "\",");
+                out.print("\"fechaNacimiento\":\"" + (usuario.getFecha_Nacimiento() != null ? usuario.getFecha_Nacimiento().toString() : "") + "\"");
+                out.print("}");
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Usuario no encontrado");
+        }
+
     }
 
     private void crearUsuario(HttpServletRequest request, HttpServletResponse response)

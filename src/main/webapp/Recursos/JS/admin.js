@@ -80,9 +80,33 @@ function filtrarUsuarios() {
 }
 
 function editarUsuario(idUsuario) {
-    // Redirigir a página de edición o abrir modal de edición
-    window.location.href = `AdminUsuarioServlet?action=obtener&id=${idUsuario}`;
+    fetch(`AdminUsuarioServlet?action=obtener&id=${idUsuario}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("Error al obtener usuario");
+            }
+            return response.json();
+        })
+        .then(usuario => {
+            document.getElementById("editUserId").value = usuario.id_usuario;
+            document.getElementById("editUserName").value = usuario.nombre;
+            document.getElementById("editUserLastName").value = usuario.apellido;
+            document.getElementById("editUserEmail").value = usuario.email;
+            document.getElementById("editUserDNI").value = usuario.dni;
+            document.getElementById("editUserPhone").value = usuario.telefono;
+            document.getElementById("editUserRole").value = usuario.rol;
+            document.getElementById("editUserStatus").value = usuario.estado;
+            document.getElementById("editUserBirthdate").value = usuario.fecha_Nacimiento;
+
+            // Mostrar modal
+            document.getElementById("editUserModal").style.display = "block";
+        })
+        .catch(error => {
+            console.error(error);
+            alert("No se pudo cargar el usuario");
+        });
 }
+
 
 function eliminarUsuario(idUsuario) {
     if(confirm('¿Está seguro de eliminar este usuario? Esta acción no se puede deshacer.')) {

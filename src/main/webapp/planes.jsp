@@ -79,7 +79,7 @@
             <td><%= p.getId_plan() %></td>
             <td><%= p.getNombre() %></td>
             <td><%= p.getDescripcion() %></td>
-            <td><%= p.getDuracion_dias() %></td>
+            <td><%= p.getDuration_dias() %></td>
             <td>$<%= p.getPrecio() %></td>
             <td><%= p.getTipo() %></td>
             <td><%= p.getEstado() %></td>

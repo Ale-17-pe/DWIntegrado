@@ -8,7 +8,8 @@ import java.util.List;
 
 public class PlanDao {
 
-    public List<PlanModel> listarTodos() throws SQLException {
+    // Listar solo los planes activos (para Membresías.jsp)
+    public List<PlanModel> listarActivos() throws SQLException {
         List<PlanModel> planes = new ArrayList<>();
         String sql = "SELECT * FROM Plan WHERE estado = 'Activo' ORDER BY nombre";
 
@@ -22,6 +23,23 @@ public class PlanDao {
         }
         return planes;
     }
+
+    // Listar todos los planes (para el admin)
+    public List<PlanModel> listarTodos() throws SQLException {
+        List<PlanModel> planes = new ArrayList<>();
+        String sql = "SELECT * FROM Plan ORDER BY nombre";
+
+        try (Connection conn = ConexionDB.abrir();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                planes.add(mapearPlan(rs));
+            }
+        }
+        return planes;
+    }
+
 
     public PlanModel obtenerPorId(int idPlan) throws SQLException {
         String sql = "SELECT * FROM Plan WHERE id_plan = ?";
@@ -96,4 +114,6 @@ public class PlanDao {
         plan.setEstado(rs.getString("estado"));
         return plan;
     }
+
 }
+

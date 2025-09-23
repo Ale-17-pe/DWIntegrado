@@ -90,4 +90,6 @@ public class AdminService {
 
     // ===================== FUTUROS MÉTODOS ADMIN =====================
     // Aquí puedes agregar más módulos según necesites
+
+
 }

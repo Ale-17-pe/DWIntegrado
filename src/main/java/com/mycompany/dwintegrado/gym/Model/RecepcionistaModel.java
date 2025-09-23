@@ -4,11 +4,9 @@
  */
 package com.mycompany.dwintegrado.gym.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+@Data
 @Setter @Getter
 @NoArgsConstructor @AllArgsConstructor
 public class RecepcionistaModel {

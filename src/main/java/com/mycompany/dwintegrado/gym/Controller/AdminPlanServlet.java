@@ -21,6 +21,7 @@ public class AdminPlanServlet extends HttpServlet {
         this.planDao = new PlanDao();
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -32,7 +33,6 @@ public class AdminPlanServlet extends HttpServlet {
             } else if ("obtener".equals(action)) {
                 obtenerPlan(request, response);
             } else {
-                // Por defecto, listar planes
                 listarPlanes(request, response);
             }
         } catch (Exception e) {
@@ -41,10 +41,15 @@ public class AdminPlanServlet extends HttpServlet {
         }
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
+        if (action == null) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Acción requerida");
+            return;
+        }
 
         try {
             switch (action) {
@@ -58,11 +63,13 @@ public class AdminPlanServlet extends HttpServlet {
                     eliminarPlan(request, response);
                     break;
                 default:
-                    response.sendRedirect("portalAdmin.jsp?error=accion_invalida");
+                    response.setContentType("application/json");
+                    response.getWriter().write("{\"success\":false, \"message\":\"Acción inválida\"}");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            response.sendRedirect("portalAdmin.jsp?error=error_servidor");
+            response.setContentType("application/json");
+            response.getWriter().write("{\"success\":false, \"message\":\"Error en el servidor\"}");
         }
     }
 
@@ -90,7 +97,7 @@ public class AdminPlanServlet extends HttpServlet {
 
     private void crearPlan(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-
+        response.setContentType("application/json");
         try {
             PlanModel plan = new PlanModel();
             plan.setNombre(request.getParameter("nombre"));
@@ -103,18 +110,18 @@ public class AdminPlanServlet extends HttpServlet {
             boolean exito = planDao.crear(plan);
 
             if (exito) {
-                response.sendRedirect("portalAdmin.jsp?success=plan_creado");
+                response.getWriter().write("{\"success\":true, \"message\":\"Plan creado correctamente\"}");
             } else {
-                response.sendRedirect("portalAdmin.jsp?error=error_crear_plan");
+                response.getWriter().write("{\"success\":false, \"message\":\"No se pudo crear el plan\"}");
             }
         } catch (NumberFormatException e) {
-            response.sendRedirect("portalAdmin.jsp?error=datos_invalidos");
+            response.getWriter().write("{\"success\":false, \"message\":\"Datos inválidos\"}");
         }
     }
 
     private void actualizarPlan(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-
+        response.setContentType("application/json");
         try {
             PlanModel plan = new PlanModel();
             plan.setId_plan(Integer.parseInt(request.getParameter("id_plan")));
@@ -128,44 +135,29 @@ public class AdminPlanServlet extends HttpServlet {
             boolean exito = planDao.actualizar(plan);
 
             if (exito) {
-                response.sendRedirect("portalAdmin.jsp?success=plan_actualizado");
+                response.getWriter().write("{\"success\":true, \"message\":\"Plan actualizado correctamente\"}");
             } else {
-                response.sendRedirect("portalAdmin.jsp?error=error_actualizar_plan");
+                response.getWriter().write("{\"success\":false, \"message\":\"No se pudo actualizar el plan\"}");
             }
         } catch (NumberFormatException e) {
-            response.sendRedirect("portalAdmin.jsp?error=datos_invalidos");
+            response.getWriter().write("{\"success\":false, \"message\":\"Datos inválidos\"}");
         }
     }
 
     private void eliminarPlan(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
-
+        response.setContentType("application/json");
         try {
             int idPlan = Integer.parseInt(request.getParameter("id_plan"));
             boolean exito = planDao.eliminar(idPlan);
 
             if (exito) {
-                response.sendRedirect("portalAdmin.jsp?success=plan_eliminado");
+                response.getWriter().write("{\"success\":true, \"message\":\"Plan eliminado correctamente\"}");
             } else {
-                response.sendRedirect("portalAdmin.jsp?error=error_eliminar_plan");
+                response.getWriter().write("{\"success\":false, \"message\":\"No se pudo eliminar el plan\"}");
             }
         } catch (NumberFormatException e) {
-            response.sendRedirect("portalAdmin.jsp?error=id_invalido");
-        }
-    }
-
-    // Método para operaciones AJAX
-    protected void doPut(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
-        try {
-            // Para futuras implementaciones de API REST
-            response.setContentType("application/json");
-            response.getWriter().write("{\"status\":\"success\",\"message\":\"Operación completada\"}");
-
-        } catch (Exception e) {
-            response.setContentType("application/json");
-            response.getWriter().write("{\"status\":\"error\",\"message\":\"Error en la operación\"}");
+            response.getWriter().write("{\"success\":false, \"message\":\"ID inválido\"}");
         }
     }
 }

@@ -37,4 +37,15 @@ public class PlanService {
     public boolean eliminarPlan(int idPlan) throws SQLException {
         return planDao.eliminar(idPlan);
     }
+    // Listar todos los planes (Admin)
+    public List<PlanModel> listarTodos() throws SQLException {
+        return planDao.listarTodos();
+    }
+
+    // Listar solo activos (Membresías pública)
+    public List<PlanModel> listarActivos() throws SQLException {
+        return planDao.listarActivos();
+    }
+    // Listar todos los planes (Admin)
+
 }

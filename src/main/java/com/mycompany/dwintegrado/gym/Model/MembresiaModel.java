@@ -4,13 +4,11 @@
  */
 package com.mycompany.dwintegrado.gym.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Data
 @Getter @Setter
 @NoArgsConstructor @AllArgsConstructor
 public class MembresiaModel {

@@ -20,7 +20,7 @@ public class ContenidoModel {
     private String estado;
     private LocalDateTime fecha_creacion;
     private int id_usuario_creador;
-
-    public void setCreadorNombre(String creadorNombre) {
-    }
+    private boolean destacado; // Para mostrar si es destacado
+    private int vistas;         // Para mostrar el número de vistas
+    private String crearNombre;
 }

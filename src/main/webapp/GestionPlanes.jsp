@@ -48,7 +48,6 @@
     // Mensajes de éxito/error
     String success = request.getParameter("success");
     String error = request.getParameter("error");
-
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -56,7 +55,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal del Administrador - AresFitness</title>
-    <link rel="stylesheet" href="Recursos/Css/CabezaAdmin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -182,79 +180,79 @@
         </div>
             <% } %>
 
-        <div id="dashboard-section" class="section active">
-            <div class="dashboard-cards">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Usuarios Registrados</h3>
-                    </div>
-                    <div class="card-content">
-                        <span class="stat-number" data-stat="total-usuarios"><%= totalUsuarios %></span>
-                        <span class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i> +<%= totalUsuarios > 0 ? ((usuariosActivos * 100) / totalUsuarios) : 0 %>% activos
-                        </span>
-                    </div>
-                </div>
+        <div id="plans-section" class="section">
+            <div class="plan-management">
+                <h2>Gestión de Planes</h2>
 
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Planes Activos</h3>
-                    </div>
-                    <div class="card-content">
-                        <span class="stat-number"><%= totalPlanes %></span>
-                        <span class="stat-change positive">
-                            <i class="fas fa-crown"></i> Disponibles
-                        </span>
-                    </div>
-                </div>
+                <form id="planForm" action="AdminPlanServlet" method="post" class="plan-form">
+                    <input type="hidden" name="action" value="crear">
 
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Contenido Publicado</h3>
+                    <div class="form-group">
+                        <label for="planName">Nombre del Plan *</label>
+                        <input type="text" id="planName" name="nombre" class="form-control" required>
                     </div>
-                    <div class="card-content">
-                        <span class="stat-number"><%= contenidoPublicado %></span>
-                        <span class="stat-change positive">
-                            <i class="fas fa-file-alt"></i> Artículos y recursos
-                        </span>
-                    </div>
-                </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Usuarios Activos</h3>
+                    <div class="form-group">
+                        <label for="planPrice">Precio (S/.) *</label>
+                        <input type="number" id="planPrice" name="precio" class="form-control" step="0.01" min="0" required>
                     </div>
-                    <div class="card-content">
-                        <span class="stat-number"><%= usuariosActivos %></span>
-                        <span class="stat-change positive">
-                            <i class="fas fa-user-check"></i> En plataforma
-                        </span>
-                    </div>
-                </div>
-            </div>
 
-            <div class="recent-activity">
-                <h2>Actividad Reciente</h2>
-                <div class="activity-list">
-                    <%
-                        // Mostrar últimos 5 usuarios registrados
-                        int count = 0;
-                        for (UsuarioModel usuario : usuarios) {
-                            if (count >= 5) break;
-                    %>
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-user-plus"></i>
+                    <div class="form-group">
+                        <label for="planDuration">Duración (días) *</label>
+                        <input type="number" id="planDuration" name="duracion_dias" class="form-control" min="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="planStatus">Estado *</label>
+                        <select id="planStatus" name="estado" class="form-control" required>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="planDescription">Descripción *</label>
+                        <textarea id="planDescription" name="descripcion" class="form-control" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="planBenefits">Beneficios (separados por coma) *</label>
+                        <textarea id="planBenefits" name="beneficios" class="form-control" rows="3"
+                                  placeholder="Ej: Acceso a todas las áreas, Clases grupales, Entrenador personal..." required></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Crear Plan
+                        </button>
+                        <button type="reset" class="btn btn-secondary">
+                            <i class="fas fa-times"></i> Limpiar
+                        </button>
+                    </div>
+                </form>
+
+                <div class="plans-list">
+                    <h3>Planes Existentes</h3>
+                    <% for (PlanModel plan : planes) { %>
+                    <div class="plan-item">
+                        <div class="plan-info">
+                            <h4><%= plan.getNombre() %></h4>
+                            <p><%= plan.getDescripcion() %></p>
+                            <span class="plan-price">S/. <%= plan.getPrecio() %> / <%= plan.getDuration_dias() %> días</span>
+                            <span class="stat-change <%= "activo".equals(plan.getEstado()) ? "positive" : "negative" %>">
+                                <%= plan.getEstado() %>
+                            </span>
                         </div>
-                        <div class="activity-details">
-                            <p>Nuevo usuario: <%= usuario.getNombre() %> <%= usuario.getApellido() %></p>
-                            <span class="activity-time">Rol: <%= usuario.getRol() %></span>
+                        <div class="plan-actions">
+                            <button class="btn-icon btn-edit" onclick="editarPlan(<%= plan.getId_plan() %>)">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon btn-delete" onclick="eliminarPlan(<%= plan.getId_plan() %>)">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </div>
                     </div>
-                    <%
-                            count++;
-                        }
-                    %>
+                    <% } %>
                 </div>
             </div>
         </div>

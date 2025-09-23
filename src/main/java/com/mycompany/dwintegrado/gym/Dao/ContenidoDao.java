@@ -149,7 +149,7 @@ public class ContenidoDao {
         contenido.setId_usuario_creador(rs.getInt("id_usuario_creador"));
         // Campo adicional para mostrar en interfaces
         if (columnExists(rs, "creador_nombre")) {
-            contenido.setCreadorNombre(rs.getString("creador_nombre"));
+            contenido.setCrearNombre(rs.getString("creador_nombre"));
         }
         return contenido;
     }

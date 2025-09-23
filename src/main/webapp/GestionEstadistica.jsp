@@ -48,7 +48,6 @@
     // Mensajes de éxito/error
     String success = request.getParameter("success");
     String error = request.getParameter("error");
-
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -56,7 +55,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal del Administrador - AresFitness</title>
-    <link rel="stylesheet" href="Recursos/Css/CabezaAdmin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -181,85 +179,104 @@
             %>
         </div>
             <% } %>
+        <div id="stats-section" class="section">
+            <div class="stats-management">
+                <h2>Estadísticas Detalladas</h2>
 
-        <div id="dashboard-section" class="section active">
-            <div class="dashboard-cards">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Usuarios Registrados</h3>
+                <div class="stats-filters">
+                    <div class="form-group">
+                        <label for="statsRange">Rango de Fechas</label>
+                        <select id="statsRange" class="form-control" onchange="cargarEstadisticas()">
+                            <option value="7">Últimos 7 días</option>
+                            <option value="30" selected>Últimos 30 días</option>
+                            <option value="90">Últimos 3 meses</option>
+                            <option value="365">Último año</option>
+                            <option value="custom">Personalizado</option>
+                        </select>
                     </div>
-                    <div class="card-content">
-                        <span class="stat-number" data-stat="total-usuarios"><%= totalUsuarios %></span>
-                        <span class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i> +<%= totalUsuarios > 0 ? ((usuariosActivos * 100) / totalUsuarios) : 0 %>% activos
-                        </span>
+                    <div class="form-group custom-range" style="display: none;">
+                        <label for="startDate">Desde</label>
+                        <input type="date" id="startDate" class="form-control">
+                    </div>
+                    <div class="form-group custom-range" style="display: none;">
+                        <label for="endDate">Hasta</label>
+                        <input type="date" id="endDate" class="form-control" value="<%= new SimpleDateFormat("yyyy-MM-dd").format(new Date()) %>">
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" onclick="cargarEstadisticas()">
+                            <i class="fas fa-sync-alt"></i> Actualizar
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportarEstadisticas()">
+                            <i class="fas fa-download"></i> Exportar
+                        </button>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Planes Activos</h3>
-                    </div>
-                    <div class="card-content">
-                        <span class="stat-number"><%= totalPlanes %></span>
-                        <span class="stat-change positive">
-                            <i class="fas fa-crown"></i> Disponibles
-                        </span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Contenido Publicado</h3>
-                    </div>
-                    <div class="card-content">
-                        <span class="stat-number"><%= contenidoPublicado %></span>
-                        <span class="stat-change positive">
-                            <i class="fas fa-file-alt"></i> Artículos y recursos
-                        </span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Usuarios Activos</h3>
-                    </div>
-                    <div class="card-content">
-                        <span class="stat-number"><%= usuariosActivos %></span>
-                        <span class="stat-change positive">
-                            <i class="fas fa-user-check"></i> En plataforma
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="recent-activity">
-                <h2>Actividad Reciente</h2>
-                <div class="activity-list">
-                    <%
-                        // Mostrar últimos 5 usuarios registrados
-                        int count = 0;
-                        for (UsuarioModel usuario : usuarios) {
-                            if (count >= 5) break;
-                    %>
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-user-plus"></i>
-                        </div>
-                        <div class="activity-details">
-                            <p>Nuevo usuario: <%= usuario.getNombre() %> <%= usuario.getApellido() %></p>
-                            <span class="activity-time">Rol: <%= usuario.getRol() %></span>
+                <div class="stats-grid">
+                    <div class="stats-card wide">
+                        <h3>Registros de Usuarios</h3>
+                        <div class="chart-container">
+                            <canvas id="userRegistrationsChart"></canvas>
                         </div>
                     </div>
-                    <%
-                            count++;
-                        }
-                    %>
+
+                    <div class="stats-card">
+                        <h3>Distribución de Usuarios</h3>
+                        <div class="chart-container">
+                            <canvas id="userDistributionChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="stats-card">
+                        <h3>Planes Más Populares</h3>
+                        <div class="chart-container">
+                            <canvas id="popularPlansChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="stats-card wide">
+                        <h3>Ingresos Mensuales</h3>
+                        <div class="chart-container">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="stats-card">
+                        <h3>Resumen General</h3>
+                        <div class="stats-summary">
+                            <div class="summary-item">
+                                <span class="summary-label">Total Usuarios</span>
+                                <span class="summary-value"><%= totalUsuarios %></span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Usuarios Activos</span>
+                                <span class="summary-value"><%= usuariosActivos %> (<%= totalUsuarios > 0 ? (usuariosActivos * 100 / totalUsuarios) : 0 %>%)</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Ingresos Mensuales</span>
+                                <span class="summary-value">S/. 15,250.00</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Contenido Publicado</span>
+                                <span class="summary-value"><%= contenidoPublicado %></span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Asistencias Diarias</span>
+                                <span class="summary-value">87</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-card">
+                        <h3>Dispositivos de Acceso</h3>
+                        <div class="chart-container">
+                            <canvas id="devicesChart"></canvas>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 </div>
-
 </body>
 </html>

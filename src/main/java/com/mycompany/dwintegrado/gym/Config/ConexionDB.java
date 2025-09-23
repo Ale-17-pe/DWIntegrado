@@ -9,7 +9,7 @@ public class ConexionDB {
     private static final String URL = "jdbc:mysql://127.0.0.1:3306/gym";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String USER = "root";
-    private static final String PASS = "";
+    private static final String PASS = "Ale17";
 
     // Retorna siempre una conexión o lanza excepción
     public static Connection abrir() throws SQLException {

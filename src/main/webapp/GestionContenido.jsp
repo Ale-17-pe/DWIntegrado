@@ -48,7 +48,6 @@
     // Mensajes de éxito/error
     String success = request.getParameter("success");
     String error = request.getParameter("error");
-
 %>
 <!DOCTYPE html>
 <html lang="es">
@@ -56,7 +55,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal del Administrador - AresFitness</title>
-    <link rel="stylesheet" href="Recursos/Css/CabezaAdmin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
@@ -182,83 +180,141 @@
         </div>
             <% } %>
 
-        <div id="dashboard-section" class="section active">
-            <div class="dashboard-cards">
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Usuarios Registrados</h3>
-                    </div>
-                    <div class="card-content">
-                        <span class="stat-number" data-stat="total-usuarios"><%= totalUsuarios %></span>
-                        <span class="stat-change positive">
-                            <i class="fas fa-arrow-up"></i> +<%= totalUsuarios > 0 ? ((usuariosActivos * 100) / totalUsuarios) : 0 %>% activos
-                        </span>
-                    </div>
-                </div>
+        <div id="content-section" class="section">
+            <div class="content-management">
+                <h2>Gestión de Contenido</h2>
 
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Planes Activos</h3>
-                    </div>
-                    <div class="card-content">
-                        <span class="stat-number"><%= totalPlanes %></span>
-                        <span class="stat-change positive">
-                            <i class="fas fa-crown"></i> Disponibles
-                        </span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Contenido Publicado</h3>
-                    </div>
-                    <div class="card-content">
-                        <span class="stat-number"><%= contenidoPublicado %></span>
-                        <span class="stat-change positive">
-                            <i class="fas fa-file-alt"></i> Artículos y recursos
-                        </span>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Usuarios Activos</h3>
-                    </div>
-                    <div class="card-content">
-                        <span class="stat-number"><%= usuariosActivos %></span>
-                        <span class="stat-change positive">
-                            <i class="fas fa-user-check"></i> En plataforma
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="recent-activity">
-                <h2>Actividad Reciente</h2>
-                <div class="activity-list">
-                    <%
-                        // Mostrar últimos 5 usuarios registrados
-                        int count = 0;
-                        for (UsuarioModel usuario : usuarios) {
-                            if (count >= 5) break;
-                    %>
-                    <div class="activity-item">
-                        <div class="activity-icon">
-                            <i class="fas fa-user-plus"></i>
+                <div class="content-actions">
+                    <button class="btn btn-primary" data-target="addContentModal">
+                        <i class="fas fa-plus"></i> Crear Nuevo Contenido
+                    </button>
+                    <div class="content-filters">
+                        <div class="form-group">
+                            <label for="contentFilter">Filtrar por:</label>
+                            <select id="contentFilter" class="form-control" onchange="filtrarContenido()">
+                                <option value="todos">Todos</option>
+                                <option value="publicado">Publicados</option>
+                                <option value="borrador">Borradores</option>
+                                <option value="destacado">Destacados</option>
+                            </select>
                         </div>
-                        <div class="activity-details">
-                            <p>Nuevo usuario: <%= usuario.getNombre() %> <%= usuario.getApellido() %></p>
-                            <span class="activity-time">Rol: <%= usuario.getRol() %></span>
+                        <div class="form-group">
+                            <label for="contentSearch">Buscar:</label>
+                            <input type="text" id="contentSearch" class="form-control" placeholder="Título o descripción" onkeyup="filtrarContenido()">
                         </div>
                     </div>
-                    <%
-                            count++;
-                        }
-                    %>
+                </div>
+
+                <div class="content-list">
+                    <h3>Contenidos Existentes</h3>
+                    <div class="content-grid">
+                        <% for (ContenidoModel contenido : contenidos) { %>
+                        <div class="content-card" data-estado="<%= contenido.getEstado() %>" data-destacado="<%= contenido.isDestacado() %>">
+                            <div class="content-header">
+                                <h4><%= contenido.getTitulo() %></h4>
+                                <span class="content-badge <%= contenido.getEstado() %>">
+                                    <%= contenido.getEstado() %>
+                                </span>
+                                <% if (contenido.isDestacado()) { %>
+                                <span class="content-badge destacado">
+                                    <i class="fas fa-star"></i> Destacado
+                                </span>
+                                <% } %>
+                            </div>
+
+                            <div class="content-actions">
+                                <button class="btn-icon btn-edit" onclick="editarContenido(<%= contenido.getContenido() %>)">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon btn-delete" onclick="eliminarContenido(<%= contenido.getContenido() %>)">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                                <button class="btn-icon <%= contenido.isDestacado() ? "btn-warning" : "btn-secondary" %>"
+                                        onclick="toggleDestacado(<%= contenido.getId_contenido() %>, <%= !contenido.isDestacado() %>)">
+                                    <i class="fas <%= contenido.isDestacado() ? "fa-star" : "fa-star-half-alt" %>"></i>
+                                </button>
+                                <button class="btn-icon <%= "publicado".equals(contenido.getEstado()) ? "btn-secondary" : "btn-success" %>"
+                                        onclick="cambiarEstadoContenido(<%= contenido.getTipo() %>, '<%= "publicado".equals(contenido.getEstado()) ? "borrador" : "publicado" %>')">
+                                    <i class="fas <%= "publicado".equals(contenido.getEstado()) ? "fa-eye-slash" : "fa-eye" %>"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <% } %>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
+</div>
+<div class="modal" id="addContentModal">
+    <div class="modal-contenido">
+        <div class="modal-header">
+            <h2 class="modal-titulo">Crear Nuevo Contenido</h2>
+            <button class="modal-cerrar" data-dismiss="modal">&times;</button>
+        </div>
+        <form id="addContentForm" action="AdminContenidoServlet" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="crear">
+
+            <div class="plan-form">
+                <div class="form-group full-width">
+                    <label for="contentTitle">Título *</label>
+                    <input type="text" id="contentTitle" name="titulo" class="form-control" required>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="contentDescription">Descripción *</label>
+                    <textarea id="contentDescription" name="descripcion" class="form-control" rows="3" required></textarea>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="contentBody">Contenido *</label>
+                    <textarea id="contentBody" name="contenido" class="form-control" rows="6" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="contentCategory">Categoría *</label>
+                    <select id="contentCategory" name="categoria" class="form-control" required>
+                        <option value="">Seleccionar categoría</option>
+                        <option value="ejercicios">Ejercicios</option>
+                        <option value="nutricion">Nutrición</option>
+                        <option value="salud">Salud y Bienestar</option>
+                        <option value="entrenamiento">Entrenamiento</option>
+                        <option value="motivacion">Motivación</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="contentStatus">Estado *</label>
+                    <select id="contentStatus" name="estado" class="form-control" required>
+                        <option value="borrador">Borrador</option>
+                        <option value="publicado">Publicado</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="contentFeatured">Destacado</label>
+                    <select id="contentFeatured" name="destacado" class="form-control">
+                        <option value="false">No</option>
+                        <option value="true">Sí</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="contentImage">Imagen Principal</label>
+                    <input type="file" id="contentImage" name="imagen" class="form-control" accept="image/*">
+                </div>
+
+                <div class="form-group full-width">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Crear Contenido
+                    </button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 </body>
